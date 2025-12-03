@@ -1,0 +1,102 @@
+---
+title: "Breast Cancer RWE-Style Cohort Build"
+author: "Your Name"
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(here)
+library(gtsummary)
+library(janitor)
+
+# Load final analytic cohort
+cohort_final <- readRDS(here("data_clean", "breast_cancer_cohort_final.rds"))
+
+# Preview the structure
+glimpse(cohort_final)
+```
+
+### **SECTION: Introduction**
+This report describes the construction of a breast cancer analytic cohort using the public dataset BreastCancer from the mlbench package.
+
+Although not actual real-world data, the workflow mimics an RWE process:
+
+- import and clean raw data
+- recode variables
+- create baseline characteristics
+- define a binary outcome
+- generate tables and plots
+
+### *SECTION: Cohort Definition**
+2. Cohort Definition
+2.1 Inclusion criteria
+
+Patients included in this analytic dataset:
+
+- have complete outcome information (benign or malignant)
+- have numeric values for cytology features
+- have a synthetic age assigned for demonstration
+
+2.2 Final sample size
+```{r}
+nrow(cohort_final)
+```
+### **SECTION: Baseline Characteristics (Table 1)**
+```{r}
+cohort_final %>%
+  select(age, age_group,
+         cl_thickness, cell_size, cell_shape,
+         marg_adhesion, epith_c_size, bare_nuclei,
+         bl_cromatin, normal_nucleoli, mitoses,
+         outcome) %>%
+  tbl_summary(
+    by = outcome,
+    missing = "ifany",
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{n} ({p}%)")
+  ) %>%
+  add_p()
+```
+### **SECTION: Plots**
+## 4. Plots
+
+### 4.1 Age distribution by outcome
+```{r}
+cohort_final %>%
+  ggplot(aes(x = age, fill = outcome)) +
+  geom_histogram(alpha = 0.5, bins = 20, position = "identity") +
+  labs(
+    title = "Age Distribution by Outcome",
+    x = "Age (years)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+### 4.2 Clump thickness by outcome
+```{r}
+cohort_final %>%
+  ggplot(aes(x = cl_thickness, fill = outcome)) +
+  geom_histogram(alpha = 0.5, bins = 20, position = "identity") +
+  labs(
+    title = "Clump Thickness by Outcome",
+    x = "Clump Thickness",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+### **SECTION: Notes + Conclusion**
+## 5. Notes on Data Cleaning
+
+Key preprocessing steps performed in earlier scripts included:
+- standardizing variable names  
+- converting cytology predictors to numeric  
+- removing rows with missing values  
+- recoding tumor class into a binary outcome  
+- creating age and age_group variables  
+
+## 6. Conclusion
+
+This demonstrates how to:
+- import & clean raw data  
+- define analytic cohorts  
+- generate baseline tables and plots  
