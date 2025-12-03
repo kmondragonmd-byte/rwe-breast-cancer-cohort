@@ -71,6 +71,7 @@ cohort_final %>%
     y = "Count"
   ) +
   theme_minimal()
+ggsave("figs/age_distribution_by_outcome.png", width = 6, height = 4)
 ```
 ### 4.2 Clump thickness by outcome
 ```{r}
@@ -83,6 +84,8 @@ cohort_final %>%
     y = "Count"
   ) +
   theme_minimal()
+ggsave("figs/clump_thickness_by_outcome.png", width = 6, height = 4)
+
 ```
 ### **SECTION: Notes + Conclusion**
 ## 5. Notes on Data Cleaning
@@ -96,7 +99,7 @@ Key preprocessing steps performed in earlier scripts included:
 
 ## 6. Conclusion
 
-This demonstrates how to:
+This RWE-style cohort demonstrates how to:
 - import & clean raw data  
 - define analytic cohorts  
 - generate baseline tables and plots  
