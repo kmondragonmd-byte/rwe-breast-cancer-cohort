@@ -52,3 +52,4 @@ bc_cohort <- bc_cohort %>%
 # Save step 1 cohort
 if (!dir.exists(here("data_clean"))) dir.create(here("data_clean"))
 saveRDS(bc_cohort, here::here("data_clean", "cohort_step1.rds"))
+
